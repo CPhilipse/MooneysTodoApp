@@ -1,9 +1,5 @@
-// import Home from './Home';
-//
-// export default Home;
-
 import {connect} from 'react-redux';
-import Home from './Home';
+import Todo from './Todo';
 import {RootState} from '../../store/reducers';
 import {addTodo} from '../../store/reducers/todoReducer';
 
@@ -19,4 +15,4 @@ const mapDispatchToProps = {
   addTodo,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Todo);

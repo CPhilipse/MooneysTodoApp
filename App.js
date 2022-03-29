@@ -1,5 +1,5 @@
 import React from 'react';
-import {StatusBar, useColorScheme} from 'react-native';
+import {StatusBar} from 'react-native';
 import {store, persistor} from './src/store';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Provider} from 'react-redux';
@@ -11,10 +11,9 @@ import Pages from './src/enum/Pages';
 import Home from './src/screens/Home';
 import Todo from './src/screens/Todo';
 import Category from './src/screens/Category';
+import AddCategory from './src/screens/AddCategory';
+import AddTodo from './src/screens/AddTodo';
 
-// TODO: Setup Redux and Persistence
-// TODO: Make the design
-// TODO: Make the functionality
 const Stack = createNativeStackNavigator();
 
 const screens = [
@@ -30,19 +29,23 @@ const screens = [
     name: Pages.CATEGORY,
     component: Category,
   },
+  {
+    name: Pages.ADD_CATEGORY,
+    component: AddCategory,
+  },
+  {
+    name: Pages.ADD_TODO,
+    component: AddTodo,
+  },
 ];
 
 const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <GestureHandlerRootView style={{flex: 1}}>
           <NavigationContainer>
-            <StatusBar
-              barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-            />
+            <StatusBar barStyle={'light-content'} />
             <Stack.Navigator initialRouteName="Home">
               {screens.map(({name, component}, index) => {
                 return (

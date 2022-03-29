@@ -98,24 +98,50 @@ const dummyData = [
   },
 ];
 
-type Props = {
-  navigation: HomeScreenNavigationProp | any;
+type Todo = {
+  title: string;
+  description: string;
+  date: string;
+  note: string;
+  isFinished: boolean;
+  bg: string;
 };
 
-const Home = ({navigation}: Props) => {
-  const [isFinishedState, setIsFinishedState] = useState(false);
+type Category = {
+  id: string;
+  category: string;
+  todos: Todo[];
+};
+
+type Props = {
+  navigation: HomeScreenNavigationProp | any;
+  categories: Category[];
+};
+
+const Home = ({navigation, categories}: Props) => {
+  const [data, setData] = useState(
+    categories[0].todos.length <= 0 ? [] : categories,
+  );
 
   const finishTodo = () => {
     // TODO: update finished state from the store, so that'll update each card separately.
-    setIsFinishedState(!isFinishedState);
+    // setIsFinishedState(!isFinishedState);
   };
 
   return (
     <View style={styles.container}>
-      <Header navigation={navigation} data={dummyData} />
+      <Header navigation={navigation} data={data} />
 
       <ScrollView>
-        {dummyData.map(({category, todos}, i) => {
+        {data.length <= 0 && (
+          <>
+            <Text style={styles.noData}>Er zijn geen todos</Text>
+            <Text style={styles.noDataSubtitle}>
+              Klik op het plusje hierboven om toe te voegen.
+            </Text>
+          </>
+        )}
+        {data.map(({category, todos}, i) => {
           return (
             <View key={i} style={styles.row}>
               <Text
@@ -137,16 +163,14 @@ const Home = ({navigation}: Props) => {
                         key={index}
                         style={[styles.todoContainer, {backgroundColor: bg}]}
                         onPress={() => navigation.navigate(Pages.TODO)}>
-                        {isFinishedState && (
-                          <View style={styles.finishedOverlay} />
-                        )}
+                        {isFinished && <View style={styles.finishedOverlay} />}
                         <Text style={styles.todoTitle}>{title}</Text>
                         <Text style={styles.todoDesc}>{description}</Text>
                         <Text style={styles.todoDate}>{date}</Text>
                         <TouchableOpacity
                           style={styles.finishedBtn}
                           onPress={finishTodo}>
-                          <Text>{isFinishedState ? '-' : ''}</Text>
+                          <Text>{isFinished ? '-' : ''}</Text>
                         </TouchableOpacity>
                       </TouchableOpacity>
                     );
@@ -157,9 +181,6 @@ const Home = ({navigation}: Props) => {
           );
         })}
       </ScrollView>
-      <TouchableOpacity onPress={() => {}} style={styles.optionsBtn}>
-        <Icon name={Icons.ADD} size={metrics.icons.big} color={colors.white} />
-      </TouchableOpacity>
     </View>
   );
 };

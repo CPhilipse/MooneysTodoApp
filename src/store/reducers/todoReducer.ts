@@ -6,15 +6,15 @@ const initialState = {
       id: '',
       category: '',
       todos: [
-        {
-          id: '',
-          title: '',
-          description: '',
-          date: '',
-          note: '',
-          isFinished: false,
-          bg: '',
-        },
+        // {
+        //   id: '',
+        //   title: '',
+        //   description: '',
+        //   date: '',
+        //   note: '',
+        //   isFinished: false,
+        //   bg: '',
+        // },
       ],
     },
   ],
@@ -50,7 +50,11 @@ const todoReducer = createSlice({
       }
     },
     addCategory(state, action) {
+      console.log('>>> ACTION PAYLOAD CAT: ', action.payload);
       // TODO: action.payload = {id: 'uuid', category: 'cat_name', todos: []}
+      state.categories.push(action.payload);
+    },
+    removeCategory(state, action) {
       state.categories.push(action.payload);
     },
   },

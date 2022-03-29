@@ -78,13 +78,21 @@ const baseOptionsBtn: ViewStyle = {
   alignItems: 'center',
 };
 
-export const optionsBtn: ViewStyle = {
-  ...baseOptionsBtn,
-  zIndex: 9,
-};
-
 export const finishedOverlay: ViewStyle = {
   ...StyleSheet.absoluteFillObject,
   backgroundColor: colors.black,
   opacity: 0.4,
+};
+
+export const noData: TextStyle = {
+  ...metrics.fonts.title,
+  color: colors.white,
+  alignSelf: 'center',
+  marginVertical: metrics.padding.vertical,
+};
+
+export const noDataSubtitle: TextStyle = {
+  ...metrics.fonts.regular,
+  color: colors.white,
+  alignSelf: 'center',
 };

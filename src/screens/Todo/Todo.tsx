@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
-import {Button, Text, TouchableOpacity, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import * as styles from './todo.style';
 import FloatingLabel from '../../components/FloatingLabel';
 
 interface Props {
   navigation: any;
+  addTodo: () => void;
 }
 
-const Todo = ({navigation}: Props) => {
+const Todo = ({navigation, addTodo}: Props) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [note, setNote] = useState('');
