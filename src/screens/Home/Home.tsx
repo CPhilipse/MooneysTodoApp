@@ -116,12 +116,11 @@ type Category = {
 type Props = {
   navigation: HomeScreenNavigationProp | any;
   categories: Category[];
+  removeCategory: any;
 };
 
-const Home = ({navigation, categories}: Props) => {
-  const [data, setData] = useState(
-    categories[0].todos.length <= 0 ? [] : categories,
-  );
+const Home = ({navigation, categories, removeCategory}: Props) => {
+  const [data, setData] = useState(categories.length <= 0 ? [] : categories);
 
   const finishTodo = () => {
     // TODO: update finished state from the store, so that'll update each card separately.
@@ -141,11 +140,15 @@ const Home = ({navigation, categories}: Props) => {
             </Text>
           </>
         )}
-        {data.map(({category, todos}, i) => {
+        {data.map(({id, category, todos}, i) => {
           return (
             <View key={i} style={styles.row}>
-              <Text
-                style={styles.title}>{`${category} (${todos.length})`}</Text>
+              <TouchableOpacity onPress={() => removeCategory(id)}>
+                <Text
+                  style={
+                    styles.title
+                  }>{`${category} (${todos.length}) VERWIJDEREN`}</Text>
+              </TouchableOpacity>
               <ScrollView horizontal>
                 <TouchableOpacity
                   style={styles.addTodoContainer}

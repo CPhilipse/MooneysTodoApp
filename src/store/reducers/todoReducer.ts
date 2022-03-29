@@ -2,21 +2,21 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   categories: [
-    {
-      id: '',
-      category: '',
-      todos: [
-        // {
-        //   id: '',
-        //   title: '',
-        //   description: '',
-        //   date: '',
-        //   note: '',
-        //   isFinished: false,
-        //   bg: '',
-        // },
-      ],
-    },
+    // {
+    //   id: '',
+    //   category: '',
+    //   todos: [
+    // {
+    //   id: '',
+    //   title: '',
+    //   description: '',
+    //   date: '',
+    //   note: '',
+    //   isFinished: false,
+    //   bg: '',
+    // },
+    // ],
+    // },
   ],
 };
 
@@ -55,7 +55,12 @@ const todoReducer = createSlice({
       state.categories.push(action.payload);
     },
     removeCategory(state, action) {
-      state.categories.push(action.payload);
+      // action.payload = id (uuid)
+      const filtered_list = state.categories.filter(
+        ({id}) => id !== action.payload,
+      );
+      console.log('>> FILTERED LIST: ', filtered_list);
+      state.categories = filtered_list;
     },
   },
 });
@@ -65,6 +70,7 @@ const todoReducer = createSlice({
  * do named exports of the action creators, and a default export of the reducer function.
  * https://redux-toolkit.js.org/tutorials/intermediate-tutorial
  * */
-export const {addTodo, setFinished, addCategory} = todoReducer.actions;
+export const {addTodo, setFinished, addCategory, removeCategory} =
+  todoReducer.actions;
 
 export default todoReducer.reducer;
