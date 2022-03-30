@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import Animated, {
   Extrapolate,
@@ -127,6 +127,11 @@ const Home = ({navigation, categories, removeCategory}: Props) => {
     // setIsFinishedState(!isFinishedState);
   };
 
+  useEffect(() => {
+    console.log('>>> USE EFFECT: ', categories);
+    setData(categories);
+  }, [categories, categories.length]);
+
   return (
     <View style={styles.container}>
       <Header navigation={navigation} data={data} />
@@ -152,7 +157,9 @@ const Home = ({navigation, categories, removeCategory}: Props) => {
               <ScrollView horizontal>
                 <TouchableOpacity
                   style={styles.addTodoContainer}
-                  onPress={() => navigation.navigate(Pages.TODO)}>
+                  onPress={() =>
+                    navigation.navigate(Pages.ADD_TODO, {categoryId: id})
+                  }>
                   <Icon
                     name={Icons.ADD}
                     size={metrics.icons.huge}

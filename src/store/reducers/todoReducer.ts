@@ -28,12 +28,9 @@ const todoReducer = createSlice({
   initialState: initialState,
   reducers: {
     addTodo(state, action) {
-      console.log('>> TODO REDUCER PAYLOAD: ', action?.payload);
-      // Loop through the categories, check to which category a todo
-      // needs to be added. Upon finding the right category, push the todo.
       for (let i = 0; i < state.categories.length; i++) {
-        if (state.categories[i] === action.payload.catId) {
-          state.categories[i].todos.push(action.payload.todo);
+        if (state.categories[i].id === action.payload.catId) {
+          state.categories[i].todos.unshift(action.payload.todo);
         }
       }
     },
@@ -50,17 +47,13 @@ const todoReducer = createSlice({
       }
     },
     addCategory(state, action) {
-      console.log('>>> ACTION PAYLOAD CAT: ', action.payload);
-      // TODO: action.payload = {id: 'uuid', category: 'cat_name', todos: []}
-      state.categories.push(action.payload);
+      // action.payload = {id: 'uuid', category: 'cat_name', todos: []}
+      state.categories.unshift(action.payload);
     },
     removeCategory(state, action) {
-      // action.payload = id (uuid)
-      const filtered_list = state.categories.filter(
+      state.categories = state.categories.filter(
         ({id}) => id !== action.payload,
       );
-      console.log('>> FILTERED LIST: ', filtered_list);
-      state.categories = filtered_list;
     },
   },
 });

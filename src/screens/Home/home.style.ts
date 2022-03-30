@@ -11,7 +11,7 @@ export const container: ViewStyle = {
 export const row: ViewStyle = {height: 200, marginTop: 20};
 
 export const title: TextStyle = {
-  ...metrics.fonts.title,
+  ...metrics.fonts.smallTitle,
   marginHorizontal: metrics.padding.horizontal,
 };
 

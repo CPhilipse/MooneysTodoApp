@@ -5,7 +5,6 @@ import {addTodo} from '../../store/reducers/todoReducer';
 
 const mapStateToProps = (state: RootState) => {
   const {categories} = state.todos;
-  console.log('>>> PROPS: ', categories);
   return {
     categories,
   };

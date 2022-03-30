@@ -62,7 +62,7 @@ const Todo = ({navigation, addTodo}: Props) => {
         <TouchableOpacity
           style={styles.createBtn}
           onPress={() => navigation.goBack()}>
-          <Text style={styles.btnText}>Aanmaken</Text>
+          <Text style={styles.btnText}>Verwijderen</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.backBtn}
