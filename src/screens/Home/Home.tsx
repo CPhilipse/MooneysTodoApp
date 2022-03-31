@@ -1,12 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
-import Animated, {
-  Extrapolate,
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as styles from './home.style';
 import Pages from '../../enum/Pages';
@@ -17,88 +10,8 @@ import Icons from '../../enum/Icons';
 
 // colors.palePurple and colors.lightBlue are really nice colors.
 
-const dummyData = [
-  {
-    id: 'uuid',
-    category: 'Homework',
-    todos: [
-      {
-        title: 'Mobile Programming',
-        description: 'Module IKPMD - need to program an app.',
-        date: '2020-03-03T20:20:20Z',
-        note: 'Do not forget to add java to the path environments, see the RN docs.',
-        isFinished: false,
-        bg: colors.lightBlue,
-      },
-      {
-        title: 'Ethical Hacking',
-        description: 'Module IKETHA - hacking!',
-        date: '2020-03-03T20:20:20Z',
-        note: 'Do not forget to add setup the metasploitable environment.',
-        isFinished: false,
-        bg: colors.palePurple,
-      },
-    ],
-  },
-  {
-    id: 'uuid2',
-    category: 'Apologetics',
-    todos: [
-      {
-        title: 'Does God exist?',
-        description: 'What is the evidence for God?',
-        date: '2020-03-03T20:20:20Z',
-        note: 'Research the arguments from Atheism and Christianity.',
-        isFinished: false,
-        bg: colors.palePurple,
-      },
-    ],
-  },
-  {
-    id: 'uuid4',
-    category: 'Categorie 3',
-    todos: [
-      {
-        title: 'Does God exist?',
-        description: 'What is the evidence for God?',
-        date: '2020-03-03T20:20:20Z',
-        note: 'Research the arguments from Atheism and Christianity.',
-        isFinished: false,
-        bg: colors.palePurple,
-      },
-    ],
-  },
-  {
-    id: 'uuid4',
-    category: 'Categorie 4',
-    todos: [
-      {
-        title: 'Does God exist?',
-        description: 'What is the evidence for God?',
-        date: '2020-03-03T20:20:20Z',
-        note: 'Research the arguments from Atheism and Christianity.',
-        isFinished: false,
-        bg: colors.palePurple,
-      },
-    ],
-  },
-  {
-    id: 'uuid5',
-    category: 'Categorie 5',
-    todos: [
-      {
-        title: 'Does God exist?',
-        description: 'What is the evidence for God?',
-        date: '2020-03-03T20:20:20Z',
-        note: 'Research the arguments from Atheism and Christianity.',
-        isFinished: false,
-        bg: colors.palePurple,
-      },
-    ],
-  },
-];
-
 type Todo = {
+  id: string;
   title: string;
   description: string;
   date: string;
@@ -117,18 +30,14 @@ type Props = {
   navigation: HomeScreenNavigationProp | any;
   categories: Category[];
   removeCategory: any;
+  setFinished: any;
 };
 
-const Home = ({navigation, categories, removeCategory}: Props) => {
+// TODO: update todo functionality
+const Home = ({navigation, categories, removeCategory, setFinished}: Props) => {
   const [data, setData] = useState(categories.length <= 0 ? [] : categories);
 
-  const finishTodo = () => {
-    // TODO: update finished state from the store, so that'll update each card separately.
-    // setIsFinishedState(!isFinishedState);
-  };
-
   useEffect(() => {
-    console.log('>>> USE EFFECT: ', categories);
     setData(categories);
   }, [categories, categories.length]);
 
@@ -148,12 +57,19 @@ const Home = ({navigation, categories, removeCategory}: Props) => {
         {data.map(({id, category, todos}, i) => {
           return (
             <View key={i} style={styles.row}>
-              <TouchableOpacity onPress={() => removeCategory(id)}>
+              <View style={styles.titleRow}>
                 <Text
-                  style={
-                    styles.title
-                  }>{`${category} (${todos.length}) VERWIJDEREN`}</Text>
-              </TouchableOpacity>
+                  style={styles.title}>{`${category} (${todos.length})`}</Text>
+                <TouchableOpacity
+                  style={styles.deleteBtn}
+                  onPress={() => removeCategory(id)}>
+                  <Icon
+                    name={Icons.TRASH}
+                    size={metrics.icons.mini}
+                    color={colors.palePurple}
+                  />
+                </TouchableOpacity>
+              </View>
               <ScrollView horizontal>
                 <TouchableOpacity
                   style={styles.addTodoContainer}
@@ -166,26 +82,30 @@ const Home = ({navigation, categories, removeCategory}: Props) => {
                     color={colors.black}
                   />
                 </TouchableOpacity>
-                {todos.map(
-                  ({title, description, date, isFinished, bg}, index) => {
-                    return (
+                {todos.map((todo, index) => {
+                  return (
+                    <TouchableOpacity
+                      key={index}
+                      style={[styles.todoContainer, {backgroundColor: todo.bg}]}
+                      onPress={() =>
+                        navigation.navigate(Pages.TODO, {todo, catId: id})
+                      }>
+                      {todo.isFinished && (
+                        <View style={styles.finishedOverlay} />
+                      )}
+                      <Text style={styles.todoTitle}>{todo.title}</Text>
+                      <Text style={styles.todoDesc}>{todo.description}</Text>
+                      <Text style={styles.todoDate}>{todo.date}</Text>
                       <TouchableOpacity
-                        key={index}
-                        style={[styles.todoContainer, {backgroundColor: bg}]}
-                        onPress={() => navigation.navigate(Pages.TODO)}>
-                        {isFinished && <View style={styles.finishedOverlay} />}
-                        <Text style={styles.todoTitle}>{title}</Text>
-                        <Text style={styles.todoDesc}>{description}</Text>
-                        <Text style={styles.todoDate}>{date}</Text>
-                        <TouchableOpacity
-                          style={styles.finishedBtn}
-                          onPress={finishTodo}>
-                          <Text>{isFinished ? '-' : ''}</Text>
-                        </TouchableOpacity>
+                        style={styles.finishedBtn}
+                        onPress={() =>
+                          setFinished({catId: id, todoId: todo.id})
+                        }>
+                        <Text>{todo.isFinished ? '-' : ''}</Text>
                       </TouchableOpacity>
-                    );
-                  },
-                )}
+                    </TouchableOpacity>
+                  );
+                })}
               </ScrollView>
             </View>
           );

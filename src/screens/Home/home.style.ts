@@ -10,8 +10,25 @@ export const container: ViewStyle = {
 
 export const row: ViewStyle = {height: 200, marginTop: 20};
 
+export const titleRow: ViewStyle = {
+  flexDirection: 'row',
+  flexWrap: 'nowrap',
+  justifyContent: 'space-between',
+};
+
 export const title: TextStyle = {
   ...metrics.fonts.smallTitle,
+  marginHorizontal: metrics.padding.horizontal,
+};
+
+export const deleteBtn: ViewStyle = {
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: 25,
+  height: 25,
+  borderRadius: 12.5,
+  borderColor: colors.white,
+  backgroundColor: colors.red,
   marginHorizontal: metrics.padding.horizontal,
 };
 

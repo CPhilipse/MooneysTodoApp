@@ -35,13 +35,14 @@ const AddTodo = ({navigation, addTodo, route}: Props) => {
   };
 
   const handleTodo = () => {
+    const date = new Date();
     addTodo({
       catId: categoryId,
       todo: {
         id: uuid.v4(),
         title,
         description,
-        date: Date(),
+        date: date.toDateString(),
         note,
         isFinished: false,
         bg,

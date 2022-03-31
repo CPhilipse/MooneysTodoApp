@@ -5,14 +5,18 @@ import FloatingLabel from '../../components/FloatingLabel';
 
 interface Props {
   navigation: any;
-  addTodo: () => void;
+  route: any;
+  removeTodo: any;
+  updateTodo: any;
 }
 
-const Todo = ({navigation, addTodo}: Props) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [note, setNote] = useState('');
-  const [bg, setBg] = useState('');
+const Todo = ({navigation, route, removeTodo, updateTodo}: Props) => {
+  const {todo, catId} = route.params;
+
+  const [title, setTitle] = useState(todo.title);
+  const [description, setDescription] = useState(todo.description);
+  const [note, setNote] = useState(todo.note);
+  const [bg, setBg] = useState(todo.bg);
 
   const _updateMasterState = (attrName: string, value: string) => {
     if (attrName === 'title') {
@@ -27,6 +31,28 @@ const Todo = ({navigation, addTodo}: Props) => {
     if (attrName === 'bg') {
       setBg(value);
     }
+  };
+
+  const handleRemoval = () => {
+    removeTodo({todoId: todo.id, catId});
+    navigation.goBack();
+  };
+
+  const handleUpdate = () => {
+    updateTodo({
+      todoId: todo.id,
+      catId,
+      updatedTodo: {
+        id: todo.id,
+        title,
+        description,
+        date: todo.date,
+        note,
+        isFinished: todo.isFinished,
+        bg,
+      },
+    });
+    navigation.goBack();
   };
 
   return (
@@ -59,13 +85,14 @@ const Todo = ({navigation, addTodo}: Props) => {
         updateMasterState={_updateMasterState}
       />
       <View style={styles.btnsContainer}>
-        <TouchableOpacity
-          style={styles.createBtn}
-          onPress={() => navigation.goBack()}>
+        <TouchableOpacity style={styles.btn} onPress={handleUpdate}>
+          <Text style={styles.btnText}>Updaten</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.btn} onPress={handleRemoval}>
           <Text style={styles.btnText}>Verwijderen</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.backBtn}
+          style={styles.btn}
           onPress={() => navigation.goBack()}>
           <Text style={styles.btnText}>Terug</Text>
         </TouchableOpacity>

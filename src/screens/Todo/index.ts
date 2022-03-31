@@ -1,17 +1,10 @@
 import {connect} from 'react-redux';
 import Todo from './Todo';
-import {RootState} from '../../store/reducers';
-import {addTodo} from '../../store/reducers/todoReducer';
-
-const mapStateToProps = (state: RootState) => {
-  const {categories} = state.todos;
-  return {
-    categories,
-  };
-};
+import {removeTodo, updateTodo} from '../../store/reducers/todoReducer';
 
 const mapDispatchToProps = {
-  addTodo,
+  removeTodo,
+  updateTodo,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Todo);
+export default connect(null, mapDispatchToProps)(Todo);
