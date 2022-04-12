@@ -20,6 +20,7 @@ export const title: TextStyle = {
 export const btnsContainer: ViewStyle = {
   flexDirection: 'row',
   flexWrap: 'nowrap',
+  alignSelf: 'center',
 };
 
 export const createBtn: ViewStyle = {

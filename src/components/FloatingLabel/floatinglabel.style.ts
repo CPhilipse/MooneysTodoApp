@@ -17,7 +17,6 @@ export const textInput: TextStyle = {
   marginTop: 10,
   marginLeft: 5,
   color: colors.black,
-  ...metrics.fonts.regular,
 };
 
 export const title: TextStyle = {

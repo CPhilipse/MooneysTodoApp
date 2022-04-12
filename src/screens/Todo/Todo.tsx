@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import * as styles from './todo.style';
 import FloatingLabel from '../../components/FloatingLabel';
+import Pages from '../../enum/Pages';
 
 interface Props {
   navigation: any;
@@ -11,7 +12,7 @@ interface Props {
 }
 
 const Todo = ({navigation, route, removeTodo, updateTodo}: Props) => {
-  const {todo, catId} = route.params;
+  const {todo, catId, fromCatPage} = route.params;
 
   const [title, setTitle] = useState(todo.title);
   const [description, setDescription] = useState(todo.description);
@@ -35,7 +36,7 @@ const Todo = ({navigation, route, removeTodo, updateTodo}: Props) => {
 
   const handleRemoval = () => {
     removeTodo({todoId: todo.id, catId});
-    navigation.goBack();
+    fromCatPage ? navigation.navigate(Pages.HOME) : navigation.goBack();
   };
 
   const handleUpdate = () => {
@@ -52,7 +53,7 @@ const Todo = ({navigation, route, removeTodo, updateTodo}: Props) => {
         bg,
       },
     });
-    navigation.goBack();
+    fromCatPage ? navigation.navigate(Pages.HOME) : navigation.goBack();
   };
 
   return (

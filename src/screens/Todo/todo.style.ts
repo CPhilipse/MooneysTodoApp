@@ -1,7 +1,7 @@
 import {TextStyle, ViewStyle} from 'react-native';
 import {colors, metrics} from '../../themes';
 
-export const container = {
+export const container: ViewStyle = {
   flex: 1,
   backgroundColor: colors.black,
 };
@@ -28,7 +28,6 @@ export const btn: ViewStyle = {
   backgroundColor: colors.palePurple,
   width: '31%',
   height: 40,
-  // margin: metrics.padding.horizontal,
   marginTop: 5,
   borderRadius: 10,
   alignItems: 'center',

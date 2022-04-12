@@ -20,13 +20,15 @@ export const title: TextStyle = {
 export const btnsContainer: ViewStyle = {
   flexDirection: 'row',
   flexWrap: 'nowrap',
+  alignSelf: 'center',
 };
 
 export const createBtn: ViewStyle = {
   backgroundColor: colors.palePurple,
   width: '40%',
   height: 40,
-  margin: metrics.padding.horizontal,
+  marginHorizontal: metrics.padding.horizontal,
+  marginVertical: metrics.scale(10),
   borderRadius: 10,
   alignItems: 'center',
   justifyContent: 'center',
@@ -36,7 +38,8 @@ export const backBtn: ViewStyle = {
   backgroundColor: colors.palePurple,
   width: '40%',
   height: 40,
-  margin: metrics.padding.horizontal,
+  marginHorizontal: metrics.padding.horizontal,
+  marginVertical: metrics.scale(10),
   borderRadius: 10,
   alignItems: 'center',
   justifyContent: 'center',

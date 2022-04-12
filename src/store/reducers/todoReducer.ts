@@ -1,6 +1,11 @@
 import {createSlice} from '@reduxjs/toolkit';
+import {Category} from '../../types/data';
 
-const initialState = {
+type State = {
+  categories: Category[];
+};
+
+const initialState: State = {
   categories: [],
 };
 
@@ -54,7 +59,6 @@ const todoReducer = createSlice({
       }
     },
     addCategory(state, action) {
-      // action.payload = {id: 'uuid', category: 'cat_name', todos: []}
       state.categories.unshift(action.payload);
     },
     removeCategory(state, action) {

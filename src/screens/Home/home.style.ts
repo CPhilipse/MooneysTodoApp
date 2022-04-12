@@ -8,7 +8,9 @@ export const container: ViewStyle = {
   // ...base_style,
 };
 
-export const row: ViewStyle = {height: 200, marginTop: 20};
+export const row: ViewStyle = {
+  marginTop: metrics.scale(15),
+};
 
 export const titleRow: ViewStyle = {
   flexDirection: 'row',
@@ -19,25 +21,26 @@ export const titleRow: ViewStyle = {
 export const title: TextStyle = {
   ...metrics.fonts.smallTitle,
   marginHorizontal: metrics.padding.horizontal,
+  color: colors.white,
 };
 
 export const deleteBtn: ViewStyle = {
   alignItems: 'center',
   justifyContent: 'center',
-  width: 25,
-  height: 25,
-  borderRadius: 12.5,
-  borderColor: colors.white,
+  width: metrics.scale(20),
+  height: metrics.scale(20),
+  borderRadius: metrics.scale(20) / 2,
   backgroundColor: colors.red,
   marginHorizontal: metrics.padding.horizontal,
 };
 
 export const todoContainer: ViewStyle = {
   backgroundColor: colors.palePurple,
-  width: 200,
-  height: 120,
-  margin: 20,
-  borderRadius: 10,
+  width: metrics.scale(155),
+  height: metrics.scale(100),
+  marginHorizontal: metrics.padding.horizontal,
+  marginVertical: metrics.scale(8),
+  borderRadius: metrics.scale(10),
 };
 
 export const addTodoContainer: ViewStyle = {
@@ -49,50 +52,36 @@ export const addTodoContainer: ViewStyle = {
 export const todoTitle: TextStyle = {
   ...metrics.fonts.regular,
   color: colors.black,
-  marginLeft: 10,
-  marginTop: 10,
+  marginLeft: metrics.scale(10),
+  marginTop: metrics.scale(10),
 };
 
 export const todoDesc: TextStyle = {
   ...metrics.fonts.smallRegular,
   color: colors.black,
-  marginLeft: 10,
-  marginTop: 3,
+  marginLeft: metrics.scale(10),
+  marginTop: metrics.scale(3),
 };
 
 export const todoDate: TextStyle = {
   ...metrics.fonts.smallRegular,
   color: colors.black,
   position: 'absolute',
-  left: 10,
-  bottom: 10,
+  left: metrics.scale(10),
+  bottom: metrics.scale(10),
 };
 
 export const finishedBtn: ViewStyle = {
-  width: 30,
-  height: 30,
+  width: metrics.scale(20),
+  height: metrics.scale(20),
   position: 'absolute',
-  right: 10,
-  bottom: 10,
-  borderRadius: 15,
+  right: metrics.scale(7),
+  bottom: metrics.scale(7),
+  borderRadius: metrics.scale(20) / 2,
   borderWidth: 1.5,
   borderColor: colors.darkBlack,
   alignItems: 'center',
   justifyContent: 'center',
-};
-
-const baseOptionsBtn: ViewStyle = {
-  width: 60,
-  height: 60,
-  backgroundColor: colors.black,
-  borderColor: colors.white,
-  borderWidth: 1,
-  borderRadius: 30,
-  position: 'absolute',
-  bottom: 30,
-  right: 30,
-  justifyContent: 'center',
-  alignItems: 'center',
 };
 
 export const finishedOverlay: ViewStyle = {

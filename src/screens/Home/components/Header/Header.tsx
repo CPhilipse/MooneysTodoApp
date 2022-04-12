@@ -6,8 +6,14 @@ import Separator from '../../../../components/Separator';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icons from '../../../../enum/Icons';
 import {colors, metrics} from '../../../../themes';
+import {Category} from '../../../../types/data';
 
-const Header = ({navigation, data}) => {
+type Props = {
+  navigation: any;
+  data: Category[];
+};
+
+const Header = ({navigation, data}: Props) => {
   return (
     <>
       <View>
@@ -30,7 +36,11 @@ const Header = ({navigation, data}) => {
                 key={i}
                 style={styles.categoryContainer}
                 onPress={() =>
-                  navigation.navigate(Pages.CATEGORY, {category, todos})
+                  navigation.navigate(Pages.CATEGORY, {
+                    category,
+                    catId: id,
+                    todos,
+                  })
                 }>
                 <Text style={styles.category}>{category}</Text>
               </TouchableOpacity>

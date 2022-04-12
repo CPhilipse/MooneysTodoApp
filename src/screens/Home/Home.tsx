@@ -7,33 +7,15 @@ import {colors, metrics} from '../../themes';
 import Header from './components/Header';
 import {HomeScreenNavigationProp} from '../../navigation/types/StackScreenProps';
 import Icons from '../../enum/Icons';
-
-// colors.palePurple and colors.lightBlue are really nice colors.
-
-type Todo = {
-  id: string;
-  title: string;
-  description: string;
-  date: string;
-  note: string;
-  isFinished: boolean;
-  bg: string;
-};
-
-type Category = {
-  id: string;
-  category: string;
-  todos: Todo[];
-};
+import {Category} from '../../types/data';
 
 type Props = {
   navigation: HomeScreenNavigationProp | any;
   categories: Category[];
   removeCategory: any;
-  setFinished: any;
+  setFinished: boolean;
 };
 
-// TODO: update todo functionality
 const Home = ({navigation, categories, removeCategory, setFinished}: Props) => {
   const [data, setData] = useState(categories.length <= 0 ? [] : categories);
 
@@ -101,7 +83,15 @@ const Home = ({navigation, categories, removeCategory, setFinished}: Props) => {
                         onPress={() =>
                           setFinished({catId: id, todoId: todo.id})
                         }>
-                        <Text>{todo.isFinished ? '-' : ''}</Text>
+                        {todo.isFinished ? (
+                          <Icon
+                            name={Icons.CLOSE}
+                            size={metrics.icons.mini}
+                            color={colors.palePurple}
+                          />
+                        ) : (
+                          <></>
+                        )}
                       </TouchableOpacity>
                     </TouchableOpacity>
                   );
