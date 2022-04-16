@@ -1,9 +1,10 @@
-import * as styles from './addtodo.style';
 import React, {useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
+import uuid from 'react-native-uuid';
+
+import * as styles from './addtodo.style';
 import {HomeScreenNavigationProp} from '../../navigation/types/StackScreenProps';
 import FloatingLabel from '../../components/FloatingLabel';
-import uuid from 'react-native-uuid';
 
 type Props = {
   navigation: HomeScreenNavigationProp | any;
