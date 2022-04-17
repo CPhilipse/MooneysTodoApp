@@ -3,6 +3,7 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import * as styles from './todo.style';
 import FloatingLabel from '../../components/FloatingLabel';
 import Pages from '../../enum/Pages';
+import {showToast} from '../../utils/ToastUtils';
 
 interface Props {
   navigation: any;
@@ -36,6 +37,7 @@ const Todo = ({navigation, route, removeTodo, updateTodo}: Props) => {
 
   const handleRemoval = () => {
     removeTodo({todoId: todo.id, catId});
+    showToast('Succesvol de todo verwijderd!');
     fromCatPage ? navigation.navigate(Pages.HOME) : navigation.goBack();
   };
 
@@ -53,6 +55,7 @@ const Todo = ({navigation, route, removeTodo, updateTodo}: Props) => {
         bg,
       },
     });
+    showToast('Succesvol de todo geüpdatet!');
     fromCatPage ? navigation.navigate(Pages.HOME) : navigation.goBack();
   };
 

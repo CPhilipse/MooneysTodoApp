@@ -5,6 +5,7 @@ import uuid from 'react-native-uuid';
 import * as styles from './addtodo.style';
 import {HomeScreenNavigationProp} from '../../navigation/types/StackScreenProps';
 import FloatingLabel from '../../components/FloatingLabel';
+import {showToast} from '../../utils/ToastUtils';
 
 type Props = {
   navigation: HomeScreenNavigationProp | any;
@@ -49,7 +50,8 @@ const AddTodo = ({navigation, addTodo, route}: Props) => {
         bg,
       },
     });
-    navigation.goBack();
+    showToast('Succesvol todo toegevoegd!');
+    return navigation.goBack();
   };
 
   return (

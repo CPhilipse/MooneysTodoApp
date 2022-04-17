@@ -4,6 +4,7 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import {HomeScreenNavigationProp} from '../../navigation/types/StackScreenProps';
 import FloatingLabel from '../../components/FloatingLabel';
 import uuid from 'react-native-uuid';
+import {showToast} from '../../utils/ToastUtils';
 
 type Props = {
   navigation: HomeScreenNavigationProp | any;
@@ -21,6 +22,7 @@ const AddCategory = ({navigation, addCategory}: Props) => {
 
   const handleCategory = () => {
     addCategory({id: uuid.v4(), category, todos: []});
+    showToast('Succesvol een categorie toegevoegd!');
     return navigation.goBack();
   };
 

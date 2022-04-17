@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+  ToastAndroid,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as styles from './home.style';
 import Pages from '../../enum/Pages';
@@ -8,6 +14,7 @@ import Header from './components/Header';
 import {HomeScreenNavigationProp} from '../../navigation/types/StackScreenProps';
 import Icons from '../../enum/Icons';
 import {Category} from '../../types/data';
+import {showToast} from '../../utils/ToastUtils';
 
 type Props = {
   navigation: HomeScreenNavigationProp | any;
@@ -22,6 +29,11 @@ const Home = ({navigation, categories, removeCategory, setFinished}: Props) => {
   useEffect(() => {
     setData(categories);
   }, [categories, categories.length]);
+
+  const deleteCategory = (id: string) => {
+    showToast('Succesvol de categorie verwijderd!');
+    return removeCategory(id);
+  };
 
   return (
     <View style={styles.container}>
@@ -44,7 +56,7 @@ const Home = ({navigation, categories, removeCategory, setFinished}: Props) => {
                   style={styles.title}>{`${category} (${todos.length})`}</Text>
                 <TouchableOpacity
                   style={styles.deleteBtn}
-                  onPress={() => removeCategory(id)}>
+                  onPress={() => deleteCategory(id)}>
                   <Icon
                     name={Icons.TRASH}
                     size={metrics.icons.mini}
@@ -83,14 +95,12 @@ const Home = ({navigation, categories, removeCategory, setFinished}: Props) => {
                         onPress={() =>
                           setFinished({catId: id, todoId: todo.id})
                         }>
-                        {todo.isFinished ? (
+                        {todo.isFinished && (
                           <Icon
                             name={Icons.CLOSE}
                             size={metrics.icons.mini}
                             color={colors.palePurple}
                           />
-                        ) : (
-                          <></>
                         )}
                       </TouchableOpacity>
                     </TouchableOpacity>
