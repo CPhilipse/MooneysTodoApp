@@ -1,11 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-  ToastAndroid,
-} from 'react-native';
+import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as styles from './home.style';
 import Pages from '../../enum/Pages';
@@ -15,6 +9,8 @@ import {HomeScreenNavigationProp} from '../../navigation/types/StackScreenProps'
 import Icons from '../../enum/Icons';
 import {Category} from '../../types/data';
 import {showToast} from '../../utils/ToastUtils';
+import {signOut} from '../../utils/FirebaseUtils';
+import {AuthContext} from '../../store';
 
 type Props = {
   navigation: HomeScreenNavigationProp | any;
@@ -25,6 +21,7 @@ type Props = {
 
 const Home = ({navigation, categories, removeCategory, setFinished}: Props) => {
   const [data, setData] = useState(categories.length <= 0 ? [] : categories);
+  const {updateFlow} = React.useContext(AuthContext);
 
   useEffect(() => {
     setData(categories);
@@ -67,9 +64,11 @@ const Home = ({navigation, categories, removeCategory, setFinished}: Props) => {
               <ScrollView horizontal>
                 <TouchableOpacity
                   style={styles.addTodoContainer}
-                  onPress={() =>
-                    navigation.navigate(Pages.ADD_TODO, {categoryId: id})
-                  }>
+                  onPress={() => {
+                    // navigation.navigate(Pages.ADD_TODO, {categoryId: id})
+                    signOut();
+                    updateFlow(Pages.LOGIN);
+                  }}>
                   <Icon
                     name={Icons.ADD}
                     size={metrics.icons.huge}

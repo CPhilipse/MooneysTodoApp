@@ -18,6 +18,7 @@ interface Props {
   titleActiveColor?: string; // to control color of title when field is active
   titleInactiveColor?: string; // to control color of title when field is active
   textInputStyles?: Record<string, unknown>;
+  secureTextEntry?: boolean;
   otherTextInputProps?: Record<string, unknown>;
 }
 
@@ -29,6 +30,7 @@ const FloatingLabel = ({
   titleInActiveSize,
   title,
   textInputStyles,
+  secureTextEntry,
   otherTextInputProps,
 }: Props) => {
   const position = useSharedValue(value ? 1 : 0);
@@ -73,6 +75,7 @@ const FloatingLabel = ({
         onFocus={_handleFocus}
         onBlur={_handleBlur}
         onChangeText={_onChangeText}
+        secureTextEntry={secureTextEntry}
         {...otherTextInputProps}
       />
     </View>

@@ -4,6 +4,8 @@ interface PageProps {
   TODO: string;
   ADD_CATEGORY: string;
   CATEGORY: string;
+  LOGIN: string;
+  REGISTRATION: string;
 }
 
 const Pages: PageProps = {
@@ -12,6 +14,8 @@ const Pages: PageProps = {
   TODO: 'Todo',
   ADD_CATEGORY: 'AddCategory',
   CATEGORY: 'Category',
+  LOGIN: 'Login',
+  REGISTRATION: 'Registration',
 };
 
 export default Pages;

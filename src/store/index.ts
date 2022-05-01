@@ -1,3 +1,4 @@
+import React from "react";
 import {compose, configureStore, getDefaultMiddleware} from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {persistStore, persistReducer} from 'redux-persist';
@@ -27,5 +28,7 @@ const store = configureStore({
 });
 
 let persistor = persistStore(store);
+// @ts-ignore
+const AuthContext = React.createContext();
 
-export {store, persistor};
+export {store, persistor, AuthContext};

@@ -13,3 +13,8 @@ export type Category = {
   category: string;
   todos: Todo[];
 };
+
+export type User = {
+  email: string;
+  isLoggedIn: boolean;
+};
