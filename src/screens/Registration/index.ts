@@ -1,3 +1,9 @@
+import {connect} from 'react-redux';
 import Registration from './Registration';
+import {register} from '../../store/reducers/userReducer';
 
-export default Registration;
+const mapDispatchToProps = {
+  register,
+};
+
+export default connect(null, mapDispatchToProps)(Registration);

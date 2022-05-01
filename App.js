@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StatusBar} from 'react-native';
 import {store, persistor} from './src/store';
 import {PersistGate} from 'redux-persist/integration/react';
@@ -8,7 +8,6 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Pages from './src/enum/Pages';
-import Home from './src/screens/Home';
 import Todo from './src/screens/Todo';
 import Category from './src/screens/Category';
 import AddCategory from './src/screens/AddCategory';
@@ -18,6 +17,7 @@ import Login from './src/screens/Login';
 import auth from '@react-native-firebase/auth';
 import {AuthContext} from './src/store';
 import {navigationRef} from './src/navigation/NavigationService';
+import DrawerNavigator from './src/navigation/Navigators/DrawerNavigator';
 
 const Stack = createNativeStackNavigator();
 const LoginStack = createNativeStackNavigator();
@@ -34,10 +34,6 @@ const loginScreens = [
 ];
 
 const screens = [
-  {
-    name: Pages.HOME,
-    component: Home,
-  },
   {
     name: Pages.TODO,
     component: Todo,
@@ -66,9 +62,12 @@ const getActiveFlow = (activeFlow: string) => {
 };
 
 export const MainNavigation = () => (
-  <Stack.Navigator
-  // initialRouteName={!userState ? Pages.LOGIN : Pages.HOME}
-  >
+  <Stack.Navigator>
+    <Stack.Screen
+      options={{title: Pages.DRAWER, headerShown: false}}
+      name={Pages.DRAWER}>
+      {props => <DrawerNavigator {...props} />}
+    </Stack.Screen>
     {screens.map(({name, component}, index) => {
       return (
         <Stack.Screen
@@ -103,7 +102,6 @@ const App = () => {
 
   // Handle user state changes
   const onAuthStateChanged = (user: any) => {
-    console.log('USER ON STATE CHANGE: ', user);
     setUserState(user);
     setFlow(!user ? Pages.LOGIN : Pages.HOME);
     if (initializing) {

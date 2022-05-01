@@ -6,6 +6,7 @@ interface PageProps {
   CATEGORY: string;
   LOGIN: string;
   REGISTRATION: string;
+  DRAWER: string;
 }
 
 const Pages: PageProps = {
@@ -16,6 +17,7 @@ const Pages: PageProps = {
   CATEGORY: 'Category',
   LOGIN: 'Login',
   REGISTRATION: 'Registration',
+  DRAWER: 'Drawer',
 };
 
 export default Pages;

@@ -15,6 +15,8 @@ export type Category = {
 };
 
 export type User = {
+  id?: string;
   email: string;
-  isLoggedIn: boolean;
+  password?: string;
+  isLoggedIn?: boolean;
 };

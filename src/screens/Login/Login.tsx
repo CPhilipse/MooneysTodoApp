@@ -1,16 +1,17 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import * as styles from './login.style';
 import FloatingLabel from '../../components/FloatingLabel';
 import Pages from '../../enum/Pages';
-import {signIn} from '../../utils/FirebaseUtils';
+import {createUser, getUser, signIn} from '../../utils/FirebaseUtils';
 import {AuthContext} from '../../store';
 
 interface Props {
   navigation: any;
+  login: any;
 }
 
-const Login = ({navigation}: Props) => {
+const Login = ({navigation, login}: Props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const {updateFlow} = React.useContext(AuthContext);
@@ -24,10 +25,11 @@ const Login = ({navigation}: Props) => {
     }
   };
 
-  const handleSignIn = () => {
-    signIn(email, password);
+  const handleSignIn = useCallback(async () => {
+    const userId = await signIn(email, password);
+    login({user: {userId, email, isLoggedIn: true}});
     return updateFlow(Pages.HOME);
-  };
+  }, [email, login, password, updateFlow]);
 
   return (
     <View style={styles.container}>

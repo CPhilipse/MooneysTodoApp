@@ -8,9 +8,10 @@ import {AuthContext} from '../../store';
 
 interface Props {
   navigation: any;
+  register: any;
 }
 
-const Registration = ({navigation}: Props) => {
+const Registration = ({navigation, register}: Props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -28,10 +29,11 @@ const Registration = ({navigation}: Props) => {
     }
   };
 
-  const handleRegistration = useCallback(() => {
-    createUser(email, password);
+  const handleRegistration = useCallback(async () => {
+    const userId = await createUser(email, password);
+    register({user: {userId, email, isLoggedIn: true}});
     return updateFlow(Pages.HOME);
-  }, [email, password, updateFlow]);
+  }, [email, password, register, updateFlow]);
 
   return (
     <View style={styles.container}>

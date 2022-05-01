@@ -1,17 +1,19 @@
 import * as styles from './addcategory.style';
-import React, {useState} from 'react';
+import React, { useCallback, useState } from "react";
 import {Text, TouchableOpacity, View} from 'react-native';
 import {HomeScreenNavigationProp} from '../../navigation/types/StackScreenProps';
 import FloatingLabel from '../../components/FloatingLabel';
 import uuid from 'react-native-uuid';
 import {showToast} from '../../utils/ToastUtils';
+import { createCategory } from "../../utils/FirebaseUtils";
 
 type Props = {
   navigation: HomeScreenNavigationProp | any;
   addCategory: any;
+  userId: string;
 };
 
-const AddCategory = ({navigation, addCategory}: Props) => {
+const AddCategory = ({navigation, addCategory, userId}: Props) => {
   const [category, setCategory] = useState('');
 
   const _updateMasterState = (attrName: string, value: string) => {
@@ -20,11 +22,14 @@ const AddCategory = ({navigation, addCategory}: Props) => {
     }
   };
 
-  const handleCategory = () => {
-    addCategory({id: uuid.v4(), category, todos: []});
+  const handleCategory = useCallback(() => {
+    const id = uuid.v4();
+    addCategory({id, category, todos: []});
+    createCategory(userId, {id, category});
+
     showToast('Succesvol een categorie toegevoegd!');
     return navigation.goBack();
-  };
+  }, [addCategory, category, navigation, userId]);
 
   return (
     <View style={styles.container}>
