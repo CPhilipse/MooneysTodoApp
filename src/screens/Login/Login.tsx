@@ -3,15 +3,18 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import * as styles from './login.style';
 import FloatingLabel from '../../components/FloatingLabel';
 import Pages from '../../enum/Pages';
-import {createUser, getUser, signIn} from '../../utils/FirebaseUtils';
+import {signIn} from '../../utils/FirebaseUtils';
 import {AuthContext} from '../../store';
+import {Category, Todo} from '../../types/data';
 
 interface Props {
   navigation: any;
   login: any;
+  addCategory: any;
+  addTodo: any;
 }
 
-const Login = ({navigation, login}: Props) => {
+const Login = ({navigation, login, addCategory, addTodo}: Props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const {updateFlow} = React.useContext(AuthContext);
@@ -25,9 +28,46 @@ const Login = ({navigation, login}: Props) => {
     }
   };
 
+  // TODO: fill local storage with todos from loggedin account
   const handleSignIn = useCallback(async () => {
-    const userId = await signIn(email, password);
+    const {userId, categories, todos} = await signIn(email, password);
+
+    // Add user details to local storage
     login({user: {userId, email, isLoggedIn: true}});
+
+    // Add categories from cloud to local storage for UI
+    categories.map(({id, category}: Category) => {
+      addCategory({id, category, todos: []});
+    });
+
+    // Add todos from cloud to categories in local storage for UI
+    console.log('LOGIN todos: ', todos, todos.length);
+    todos.map(
+      ({
+        categoryId,
+        id,
+        title,
+        description,
+        date,
+        note,
+        isFinished,
+        bg,
+      }: Todo) => {
+        console.log('>> In map for adding todo')
+        addTodo({
+          catId: categoryId,
+          todo: {
+            id,
+            title,
+            description,
+            date,
+            note,
+            isFinished,
+            bg,
+          },
+        });
+      },
+    );
     return updateFlow(Pages.HOME);
   }, [email, login, password, updateFlow]);
 

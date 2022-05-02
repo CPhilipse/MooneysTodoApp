@@ -17,8 +17,11 @@ const todoReducer = createSlice({
   initialState: initialState,
   reducers: {
     addTodo(state, action) {
+      console.log('>> REDUX action: ', action);
       for (let i = 0; i < state.categories.length; i++) {
+        console.log('>> REDUX for: ', i);
         if (state.categories[i].id === action.payload.catId) {
+          console.log('>> REDUX if: ');
           state.categories[i].todos.unshift(action.payload.todo);
         }
       }
@@ -66,6 +69,9 @@ const todoReducer = createSlice({
         ({id}) => id !== action.payload,
       );
     },
+    clearAllTodos(state) {
+      state.categories = [];
+    },
   },
 });
 
@@ -81,6 +87,7 @@ export const {
   removeCategory,
   removeTodo,
   updateTodo,
+  clearAllTodos,
 } = todoReducer.actions;
 
 export default todoReducer.reducer;

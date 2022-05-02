@@ -1,4 +1,5 @@
 export type Todo = {
+  categoryId?: string;
   id: string | number[];
   title: string;
   description: string;

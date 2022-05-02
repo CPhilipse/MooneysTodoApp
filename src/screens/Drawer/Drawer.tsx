@@ -6,17 +6,18 @@ import Pages from '../../enum/Pages';
 import {AuthContext} from '../../store';
 
 type Props = {
-  navigation: any;
-  logout: any;
   email: string;
+  logout: any;
+  clearAllTodos: any;
 };
 
-const Drawer = ({navigation, logout, email}: Props) => {
+const Drawer = ({email, logout, clearAllTodos}: Props) => {
   const {updateFlow} = React.useContext(AuthContext);
 
   const handleSignOut = useCallback(() => {
     signOut();
     logout();
+    clearAllTodos();
     updateFlow(Pages.LOGIN);
   }, []);
 

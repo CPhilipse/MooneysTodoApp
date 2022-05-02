@@ -1,6 +1,6 @@
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import {Todo, User} from '../types/data';
+import {Category, Todo, User} from '../types/data';
 
 export const createUser: any = async (email: string, password: string) => {
   try {
@@ -22,12 +22,14 @@ export const createUser: any = async (email: string, password: string) => {
   }
 };
 
-export const signIn = async (email: string, password: string) => {
+export const signIn: any = async (email: string, password: string) => {
   try {
     await auth().signInWithEmailAndPassword(email, password);
     const userId = await getUser(email);
+    const categories = await getAllCategories(userId);
+    const todos = await getAllTodos(userId, categories);
     console.log('Signed in!', userId);
-    return userId;
+    return {userId, categories, todos};
   } catch (error) {
     console.error('>>> Sign in error: ', error);
   }
@@ -53,7 +55,34 @@ export const deleteTodo = (
     });
 };
 
-// export const getTodo = () => {};
+export const getAllTodos: any = async (
+  userId: string,
+  categories: Category[],
+) => {
+  const allTodos: any = [];
+  for (let i = 0; i < categories.length; i++) {
+    const categoryCollectionId = await getCategory(userId, categories[i].id);
+    await firestore()
+      .collection(`users/${userId}/categories/${categoryCollectionId}/todos`)
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach((documentSnapshot: any) => {
+          allTodos.unshift({
+            categoryId: categories[i].id,
+            id: documentSnapshot._data.id,
+            title: documentSnapshot._data.title,
+            description: documentSnapshot._data.description,
+            note: documentSnapshot._data.note,
+            date: documentSnapshot._data.date,
+            isFinished: documentSnapshot._data.isFinished,
+            bg: documentSnapshot._data.bg,
+          });
+        });
+      });
+  }
+  return allTodos;
+};
+
 type CreateTodo = {
   userId: string;
   categoryId: string;
@@ -84,6 +113,22 @@ export const deleteCategory = (userId: string, categoryId: string) => {
     .delete()
     .then(() => {
       console.log('Category deleted!');
+    });
+};
+
+export const getAllCategories = async (userId: string) => {
+  return await firestore()
+    .collection(`users/${userId}/categories`)
+    .get()
+    .then(querySnapshot => {
+      const categories: any[] = [];
+      querySnapshot.forEach((documentSnapshot: any) => {
+        categories.unshift({
+          id: documentSnapshot._data.id,
+          category: documentSnapshot._data.category,
+        });
+      });
+      return categories;
     });
 };
 

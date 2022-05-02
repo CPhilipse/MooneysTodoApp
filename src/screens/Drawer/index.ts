@@ -2,6 +2,7 @@ import {connect} from 'react-redux';
 import Drawer from './Drawer';
 import {logout} from '../../store/reducers/userReducer';
 import {RootState} from '../../store/reducers';
+import {clearAllTodos} from '../../store/reducers/todoReducer';
 
 const mapStateToProps = (state: RootState) => {
   const {email} = state.user;
@@ -12,6 +13,7 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = {
   logout,
+  clearAllTodos,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Drawer);
