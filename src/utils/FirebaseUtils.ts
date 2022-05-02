@@ -1,6 +1,6 @@
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import {Category, Todo, User} from '../types/data';
+import {Todo, User} from '../types/data';
 
 export const createUser: any = async (email: string, password: string) => {
   try {
@@ -24,13 +24,9 @@ export const createUser: any = async (email: string, password: string) => {
 
 export const signIn = async (email: string, password: string) => {
   try {
-    const authenticate = await auth().signInWithEmailAndPassword(
-      email,
-      password,
-    );
-    // TODO: make sure you return the ID and not the UID!**
-    const userId = authenticate.user._user.uid;
-    console.log('Signed in!', authenticate);
+    await auth().signInWithEmailAndPassword(email, password);
+    const userId = await getUser(email);
+    console.log('Signed in!', userId);
     return userId;
   } catch (error) {
     console.error('>>> Sign in error: ', error);
@@ -58,12 +54,17 @@ export const deleteTodo = (
 };
 
 // export const getTodo = () => {};
-
-export const addTodo = (userId: string, categoryId: string, todo: Todo) => {
+type CreateTodo = {
+  userId: string;
+  categoryId: string;
+  todo: Todo;
+};
+export const createTodo = async ({userId, categoryId, todo}: CreateTodo) => {
+  const categoryCollectionId = await getCategory(userId, categoryId);
   firestore()
-    .collection(`users/${userId}/categories/${categoryId}/todos`)
+    .collection(`users/${userId}/categories/${categoryCollectionId}/todos`)
     .add({
-      // id: todo.id,
+      id: todo.id,
       title: todo.title,
       description: todo.description,
       note: todo.note,
@@ -72,7 +73,7 @@ export const addTodo = (userId: string, categoryId: string, todo: Todo) => {
       bg: todo.bg,
     })
     .then(() => {
-      console.log('User added!');
+      console.log('Todo added!');
     });
 };
 
@@ -86,7 +87,18 @@ export const deleteCategory = (userId: string, categoryId: string) => {
     });
 };
 
-// export const getCategories = () => {};
+export const getCategory = async (userId: string, categoryId: string) => {
+  return await firestore()
+    .collection(`users/${userId}/categories`)
+    // Filter results
+    .where('id', '==', categoryId)
+    .get()
+    .then(querySnapshot => {
+      const collectionId = querySnapshot.docs[0].id;
+      console.log('GetCategory() - collectionId: ', collectionId);
+      return collectionId;
+    });
+};
 
 export const createCategory = (
   userId: string,
@@ -104,22 +116,15 @@ export const createCategory = (
 };
 
 export const getUser = async (email: string) => {
-  const user = await firestore()
+  return await firestore()
     .collection('users')
     // Filter results
     .where('email', '==', email)
     .get()
     .then(querySnapshot => {
-      console.log('>>> QuerySnapShot: ', querySnapshot);
       const userId = querySnapshot.docs[0].id;
-      console.log('>>> userId GET USER(): ', userId);
-      console.log('>>> userId GET USER()2: ', querySnapshot.docs[0]);
-      console.log('>>> userId GET USER()3: ', querySnapshot.docs);
       return userId;
-      /* ... */
     });
-  console.log('>>> GET USER user: ', user);
-  return user;
 };
 
 export const addUser = async ({email, password}: User) => {

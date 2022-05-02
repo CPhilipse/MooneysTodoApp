@@ -6,14 +6,16 @@ import * as styles from './addtodo.style';
 import {HomeScreenNavigationProp} from '../../navigation/types/StackScreenProps';
 import FloatingLabel from '../../components/FloatingLabel';
 import {showToast} from '../../utils/ToastUtils';
+import {createTodo, getCategory} from '../../utils/FirebaseUtils';
 
 type Props = {
   navigation: HomeScreenNavigationProp | any;
-  addTodo: any;
   route: any;
+  addTodo: any;
+  userId: any;
 };
 
-const AddTodo = ({navigation, addTodo, route}: Props) => {
+const AddTodo = ({navigation, route, addTodo, userId}: Props) => {
   const {categoryId} = route.params;
 
   const [title, setTitle] = useState('');
@@ -36,8 +38,21 @@ const AddTodo = ({navigation, addTodo, route}: Props) => {
     }
   };
 
-  const handleTodo = () => {
+  const handleTodo = async () => {
     const date = new Date();
+    await createTodo({
+      userId,
+      categoryId,
+      todo: {
+        id: uuid.v4(),
+        title,
+        description,
+        date: date.toDateString(),
+        note,
+        isFinished: false,
+        bg,
+      },
+    });
     addTodo({
       catId: categoryId,
       todo: {
