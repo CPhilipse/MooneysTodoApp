@@ -31,7 +31,7 @@ export const signIn: any = async (email: string, password: string) => {
     console.log('Signed in!', userId);
     return {userId, categories, todos};
   } catch (error) {
-    console.error('>>> Sign in error: ', error);
+    console.error('Sign in error: ', error);
   }
 };
 
@@ -42,16 +42,48 @@ export const signOut = () => {
 };
 
 export const deleteTodo = (
-  userId: string,
-  categoryId: string,
-  todoId: string,
+  userCollectionId: string,
+  categoryCollectionId: string,
+  todoCollectionId: string,
 ) => {
   firestore()
-    .collection(`users/${userId}/categories/${categoryId}/todos`)
-    .doc(todoId)
+    .collection(
+      `users/${userCollectionId}/categories/${categoryCollectionId}/todos`,
+    )
+    .doc(todoCollectionId)
     .delete()
     .then(() => {
       console.log('Todo deleted!');
+    });
+};
+
+export const getTodo = async (
+  userId: string,
+  categoryCollectionId: string,
+  todoId: string,
+) => {
+  return await firestore()
+    .collection(`users/${userId}/categories/${categoryCollectionId}/todos`)
+    .where('id', '==', todoId)
+    .get()
+    .then(querySnapshot => {
+      return querySnapshot.docs[0].id; // collectionId
+    });
+};
+
+export const dbUpdateTodo = async (
+  userId: string,
+  categoryCollectionId: string,
+  todoCollectionId: string,
+  updatedTodo: Todo,
+) => {
+  return await firestore()
+    .collection(`users/${userId}/categories/${categoryCollectionId}/todos`)
+    // Filter results
+    .doc(todoCollectionId)
+    .update({...updatedTodo})
+    .then(() => {
+      console.log('Todo updated');
     });
 };
 
@@ -106,10 +138,13 @@ export const createTodo = async ({userId, categoryId, todo}: CreateTodo) => {
     });
 };
 
-export const deleteCategory = (userId: string, categoryId: string) => {
+export const deleteCategory = (
+  userId: string,
+  categoryCollectionId: string,
+) => {
   firestore()
     .collection(`users/${userId}/categories`)
-    .doc(categoryId)
+    .doc(categoryCollectionId)
     .delete()
     .then(() => {
       console.log('Category deleted!');

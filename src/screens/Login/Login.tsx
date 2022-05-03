@@ -53,7 +53,6 @@ const Login = ({navigation, login, addCategory, addTodo}: Props) => {
         isFinished,
         bg,
       }: Todo) => {
-        console.log('>> In map for adding todo')
         addTodo({
           catId: categoryId,
           todo: {

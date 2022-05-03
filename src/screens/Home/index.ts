@@ -5,8 +5,10 @@ import {removeCategory, setFinished} from '../../store/reducers/todoReducer';
 
 const mapStateToProps = (state: RootState) => {
   const {categories} = state.todos;
+  const {id: userId} = state.user;
   return {
     categories,
+    userId,
   };
 };
 

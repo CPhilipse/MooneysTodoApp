@@ -4,15 +4,22 @@ import * as styles from './todo.style';
 import FloatingLabel from '../../components/FloatingLabel';
 import Pages from '../../enum/Pages';
 import {showToast} from '../../utils/ToastUtils';
+import {
+  dbUpdateTodo,
+  deleteTodo,
+  getCategory,
+  getTodo,
+} from '../../utils/FirebaseUtils';
 
 interface Props {
   navigation: any;
   route: any;
   removeTodo: any;
   updateTodo: any;
+  userId: any;
 }
 
-const Todo = ({navigation, route, removeTodo, updateTodo}: Props) => {
+const Todo = ({navigation, route, removeTodo, updateTodo, userId}: Props) => {
   const {todo, catId, fromCatPage} = route.params;
 
   const [title, setTitle] = useState(todo.title);
@@ -35,13 +42,40 @@ const Todo = ({navigation, route, removeTodo, updateTodo}: Props) => {
     }
   };
 
-  const handleRemoval = () => {
+  const handleRemoval = async () => {
+    // Delete todo from cloud/firestore/firebase/db
+    const categoryCollectionId: string = await getCategory(userId, catId);
+    const todoCollectionId: string = await getTodo(
+      userId,
+      categoryCollectionId,
+      todo.id,
+    );
+    deleteTodo(userId, categoryCollectionId, todoCollectionId);
+
+    // Delete todo locally for UI
     removeTodo({todoId: todo.id, catId});
     showToast('Succesvol de todo verwijderd!');
     fromCatPage ? navigation.navigate(Pages.HOME) : navigation.goBack();
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
+    const categoryCollectionId: string = await getCategory(userId, catId);
+    const todoCollectionId: string = await getTodo(
+      userId,
+      categoryCollectionId,
+      todo.id,
+    );
+    await dbUpdateTodo(userId, categoryCollectionId, todoCollectionId, {
+      id: todo.id,
+      title,
+      description,
+      date: todo.date,
+      note,
+      isFinished: todo.isFinished,
+      bg,
+    });
+
+    // Update todo locally
     updateTodo({
       todoId: todo.id,
       catId,

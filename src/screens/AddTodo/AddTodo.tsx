@@ -40,11 +40,12 @@ const AddTodo = ({navigation, route, addTodo, userId}: Props) => {
 
   const handleTodo = async () => {
     const date = new Date();
+    const unique_uuid = uuid.v4();
     await createTodo({
       userId,
       categoryId,
       todo: {
-        id: uuid.v4(),
+        id: unique_uuid,
         title,
         description,
         date: date.toDateString(),
@@ -56,7 +57,7 @@ const AddTodo = ({navigation, route, addTodo, userId}: Props) => {
     addTodo({
       catId: categoryId,
       todo: {
-        id: uuid.v4(),
+        id: unique_uuid,
         title,
         description,
         date: date.toDateString(),

@@ -7,26 +7,63 @@ import {colors, metrics} from '../../themes';
 import Header from './components/Header';
 import {HomeScreenNavigationProp} from '../../navigation/types/StackScreenProps';
 import Icons from '../../enum/Icons';
-import {Category} from '../../types/data';
+import {Category, Todo} from '../../types/data';
 import {showToast} from '../../utils/ToastUtils';
+import {
+  dbUpdateTodo,
+  deleteCategory,
+  getCategory,
+  getTodo,
+} from '../../utils/FirebaseUtils';
 
 type Props = {
   navigation: HomeScreenNavigationProp | any;
   categories: Category[];
   removeCategory: any;
-  setFinished: boolean;
+  setFinished: any;
+  userId: string;
 };
 
-const Home = ({navigation, categories, removeCategory, setFinished}: Props) => {
+const Home = ({
+  navigation,
+  categories,
+  removeCategory,
+  setFinished,
+  userId,
+}: Props) => {
   const [data, setData] = useState(categories.length <= 0 ? [] : categories);
 
   useEffect(() => {
     setData(categories);
   }, [categories, categories.length]);
 
-  const deleteCategory = (id: string) => {
+  const handleDeleteCategory = async (id: string) => {
     showToast('Succesvol de categorie verwijderd!');
+    const categoryCollectionId: string = await getCategory(userId, id);
+    deleteCategory(userId, categoryCollectionId);
     return removeCategory(id);
+  };
+
+  const handleFinishedTodo = async (id: string, todo: Todo) => {
+    // Update isFinished of todo locally
+    setFinished({catId: id, todoId: todo.id});
+
+    // Update isFinished of todo in db
+    const categoryCollectionId: string = await getCategory(userId, id);
+    const todoCollectionId: string = await getTodo(
+      userId,
+      categoryCollectionId,
+      todo.id,
+    );
+    await dbUpdateTodo(userId, categoryCollectionId, todoCollectionId, {
+      id: todo.id,
+      title: todo.title,
+      description: todo.description,
+      date: todo.date,
+      note: todo.description,
+      isFinished: !todo.isFinished,
+      bg: todo.bg,
+    });
   };
 
   return (
@@ -50,7 +87,7 @@ const Home = ({navigation, categories, removeCategory, setFinished}: Props) => {
                   style={styles.title}>{`${category} (${todos.length})`}</Text>
                 <TouchableOpacity
                   style={styles.deleteBtn}
-                  onPress={() => deleteCategory(id)}>
+                  onPress={() => handleDeleteCategory(id)}>
                   <Icon
                     name={Icons.TRASH}
                     size={metrics.icons.mini}
@@ -62,7 +99,7 @@ const Home = ({navigation, categories, removeCategory, setFinished}: Props) => {
                 <TouchableOpacity
                   style={styles.addTodoContainer}
                   onPress={() => {
-                    navigation.navigate(Pages.ADD_TODO, {categoryId: id})
+                    navigation.navigate(Pages.ADD_TODO, {categoryId: id});
                   }}>
                   <Icon
                     name={Icons.ADD}
@@ -86,9 +123,7 @@ const Home = ({navigation, categories, removeCategory, setFinished}: Props) => {
                       <Text style={styles.todoDate}>{todo.date}</Text>
                       <TouchableOpacity
                         style={styles.finishedBtn}
-                        onPress={() =>
-                          setFinished({catId: id, todoId: todo.id})
-                        }>
+                        onPress={() => handleFinishedTodo(id, todo)}>
                         {todo.isFinished && (
                           <Icon
                             name={Icons.CLOSE}
