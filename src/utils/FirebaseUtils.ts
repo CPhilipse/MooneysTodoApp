@@ -202,8 +202,7 @@ export const getUser = async (email: string) => {
     .where('email', '==', email)
     .get()
     .then(querySnapshot => {
-      const userId = querySnapshot.docs[0].id;
-      return userId;
+      return querySnapshot.docs[0].id; // collection id of the user
     });
 };
 
