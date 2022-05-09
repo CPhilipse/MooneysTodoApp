@@ -26,7 +26,7 @@ export const btnsContainer: ViewStyle = {
 
 export const btn: ViewStyle = {
   backgroundColor: colors.palePurple,
-  width: '31%',
+  width: '30%',
   height: 40,
   marginTop: 5,
   borderRadius: 10,

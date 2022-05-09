@@ -96,7 +96,7 @@ const Todo = ({navigation, route, removeTodo, updateTodo, userId}: Props) => {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>Maak een TODO</Text>
+        <Text style={styles.title}>TODO Wijzigen</Text>
       </View>
       <FloatingLabel
         attrName="title"

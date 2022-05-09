@@ -102,3 +102,7 @@ export const noDataSubtitle: TextStyle = {
   color: colors.white,
   alignSelf: 'center',
 };
+
+export const scrollView: ViewStyle = {
+  paddingBottom: metrics.padding.vertical
+}

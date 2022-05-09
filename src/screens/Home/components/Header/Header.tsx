@@ -2,7 +2,6 @@ import React from 'react';
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import * as styles from './header.style';
 import Pages from '../../../../enum/Pages';
-import Separator from '../../../../components/Separator';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icons from '../../../../enum/Icons';
 import {colors, metrics} from '../../../../themes';
@@ -16,7 +15,7 @@ type Props = {
 const Header = ({navigation, data}: Props) => {
   return (
     <>
-      <View>
+      <View style={styles.line}>
         <ScrollView
           contentContainerStyle={styles.container}
           horizontal
@@ -48,7 +47,6 @@ const Header = ({navigation, data}: Props) => {
           })}
         </ScrollView>
       </View>
-      <Separator />
     </>
   );
 };

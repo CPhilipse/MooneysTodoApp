@@ -70,7 +70,7 @@ const Home = ({
     <View style={styles.container}>
       <Header navigation={navigation} data={data} />
 
-      <ScrollView>
+      <ScrollView contentContainerStyle={styles.scrollView}>
         {data.length <= 0 && (
           <>
             <Text style={styles.noData}>Er zijn geen todos</Text>

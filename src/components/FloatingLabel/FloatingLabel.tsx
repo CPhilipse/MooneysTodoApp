@@ -11,6 +11,7 @@ import Animated, {
 interface Props {
   attrName: string;
   title: string;
+  testID?: string;
   value: string;
   updateMasterState: (attrName: string, updateValue: string) => void;
   titleActiveSize?: number; // to control size of title when field is active
@@ -29,6 +30,7 @@ const FloatingLabel = ({
   titleActiveSize,
   titleInActiveSize,
   title,
+  testID,
   textInputStyles,
   secureTextEntry,
   otherTextInputProps,
@@ -76,6 +78,7 @@ const FloatingLabel = ({
         onBlur={_handleBlur}
         onChangeText={_onChangeText}
         secureTextEntry={secureTextEntry}
+        testID={testID}
         {...otherTextInputProps}
       />
     </View>

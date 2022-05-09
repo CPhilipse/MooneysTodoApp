@@ -2,7 +2,8 @@ import {colors, metrics} from '../../../../themes';
 import {TextStyle, ViewStyle} from 'react-native';
 
 export const container: ViewStyle = {
-  margin: metrics.padding.vertical,
+  marginVertical: metrics.padding.vertical,
+  marginLeft: metrics.padding.horizontal,
   paddingRight: metrics.padding.horizontal,
 };
 
@@ -20,4 +21,9 @@ export const category: TextStyle = {
   ...metrics.fonts.smallBold,
   color: colors.black,
   alignSelf: 'center',
+};
+
+export const line: ViewStyle = {
+  borderBottomWidth: 0.5,
+  borderColor: colors.borderGrey,
 };

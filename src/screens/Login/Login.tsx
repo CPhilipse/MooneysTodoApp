@@ -17,6 +17,7 @@ interface Props {
 const Login = ({navigation, login, addCategory, addTodo}: Props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loginMessage, setLoginMessage] = useState('');
   const {updateFlow} = React.useContext(AuthContext);
 
   const updateState = (attrName: string, value: string) => {
@@ -28,46 +29,50 @@ const Login = ({navigation, login, addCategory, addTodo}: Props) => {
     }
   };
 
-  // TODO: fill local storage with todos from loggedin account
   const handleSignIn = useCallback(async () => {
-    const {userId, categories, todos} = await signIn(email, password);
+    try {
+      const {userId, categories, todos} = await signIn(email, password);
+      setLoginMessage('Succesvol!');
 
-    // Add user details to local storage
-    login({user: {userId, email, isLoggedIn: true}});
+      // Add user details to local storage
+      login({user: {userId, email, isLoggedIn: true}});
 
-    // Add categories from cloud to local storage for UI
-    categories.map(({id, category}: Category) => {
-      addCategory({id, category, todos: []});
-    });
+      // Add categories from cloud to local storage for UI
+      categories.map(({id, category}: Category) => {
+        addCategory({id, category, todos: []});
+      });
 
-    // Add todos from cloud to categories in local storage for UI
-    console.log('LOGIN todos: ', todos, todos.length);
-    todos.map(
-      ({
-        categoryId,
-        id,
-        title,
-        description,
-        date,
-        note,
-        isFinished,
-        bg,
-      }: Todo) => {
-        addTodo({
-          catId: categoryId,
-          todo: {
-            id,
-            title,
-            description,
-            date,
-            note,
-            isFinished,
-            bg,
-          },
-        });
-      },
-    );
-    return updateFlow(Pages.HOME);
+      // Add todos from cloud to categories in local storage for UI
+      console.log('LOGIN todos: ', todos, todos.length);
+      todos.map(
+        ({
+          categoryId,
+          id,
+          title,
+          description,
+          date,
+          note,
+          isFinished,
+          bg,
+        }: Todo) => {
+          addTodo({
+            catId: categoryId,
+            todo: {
+              id,
+              title,
+              description,
+              date,
+              note,
+              isFinished,
+              bg,
+            },
+          });
+        },
+      );
+      return updateFlow(Pages.HOME);
+    } catch (e) {
+      console.log(e);
+    }
   }, [email, login, password, updateFlow]);
 
   return (
@@ -80,6 +85,7 @@ const Login = ({navigation, login, addCategory, addTodo}: Props) => {
           title={'E-mail'}
           value={email}
           updateMasterState={updateState}
+          testID={'email'}
         />
         <FloatingLabel
           attrName={'password'}
@@ -87,12 +93,19 @@ const Login = ({navigation, login, addCategory, addTodo}: Props) => {
           value={password}
           secureTextEntry
           updateMasterState={updateState}
+          testID={'password'}
         />
       </View>
-      <TouchableOpacity style={styles.btn} onPress={handleSignIn}>
+      <TouchableOpacity
+        testID={'loginBtn'}
+        style={styles.btn}
+        onPress={handleSignIn}>
         <Text style={styles.btnText}>Inloggen</Text>
       </TouchableOpacity>
       <View style={styles.alignRegisterBtn}>
+        {loginMessage !== '' && (
+          <Text style={styles.textRegister}>{loginMessage}</Text>
+        )}
         <Text style={styles.textRegister}>Nog geen account? Ga je </Text>
         <TouchableOpacity
           onPress={() => navigation.navigate(Pages.REGISTRATION)}>
