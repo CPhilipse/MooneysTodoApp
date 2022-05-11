@@ -20,13 +20,12 @@ export const title: TextStyle = {
 export const btnsContainer: ViewStyle = {
   flexDirection: 'row',
   flexWrap: 'nowrap',
-  justifyContent: 'space-around',
-  paddingHorizontal: metrics.padding.horizontal,
+  justifyContent: 'space-evenly',
 };
 
 export const btn: ViewStyle = {
   backgroundColor: colors.palePurple,
-  width: '30%',
+  width: '26.5%',
   height: 40,
   marginTop: 5,
   borderRadius: 10,

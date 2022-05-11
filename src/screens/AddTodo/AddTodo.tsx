@@ -100,11 +100,11 @@ const AddTodo = ({navigation, route, addTodo, userId}: Props) => {
         updateMasterState={_updateMasterState}
       />
       <View style={styles.btnsContainer}>
-        <TouchableOpacity style={styles.createBtn} onPress={handleTodo}>
+        <TouchableOpacity style={styles.btn} onPress={handleTodo}>
           <Text style={styles.btnText}>Aanmaken</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.backBtn}
+          style={styles.btn}
           onPress={() => navigation.goBack()}>
           <Text style={styles.btnText}>Terug</Text>
         </TouchableOpacity>

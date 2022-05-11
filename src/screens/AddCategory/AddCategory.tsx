@@ -1,11 +1,11 @@
 import * as styles from './addcategory.style';
-import React, { useCallback, useState } from "react";
+import React, {useCallback, useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {HomeScreenNavigationProp} from '../../navigation/types/StackScreenProps';
 import FloatingLabel from '../../components/FloatingLabel';
 import uuid from 'react-native-uuid';
 import {showToast} from '../../utils/ToastUtils';
-import { createCategory } from "../../utils/FirebaseUtils";
+import {createCategory} from '../../utils/FirebaseUtils';
 
 type Props = {
   navigation: HomeScreenNavigationProp | any;
@@ -43,11 +43,11 @@ const AddCategory = ({navigation, addCategory, userId}: Props) => {
         updateMasterState={_updateMasterState}
       />
       <View style={styles.btnsContainer}>
-        <TouchableOpacity style={styles.createBtn} onPress={handleCategory}>
+        <TouchableOpacity style={styles.btn} onPress={handleCategory}>
           <Text style={styles.btnText}>Aanmaken</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.backBtn}
+          style={styles.btn}
           onPress={() => navigation.goBack()}>
           <Text style={styles.btnText}>Terug</Text>
         </TouchableOpacity>

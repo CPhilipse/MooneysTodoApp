@@ -10,7 +10,7 @@ export const title: TextStyle = {
   ...metrics.fonts.title,
   color: colors.white,
   alignSelf: 'center',
-  marginTop: metrics.padding.vertical
+  marginTop: metrics.padding.vertical,
 };
 
 export const inputContainer: ViewStyle = {
@@ -25,12 +25,13 @@ export const alignRegisterBtn: ViewStyle = {
 
 export const btn: ViewStyle = {
   backgroundColor: colors.palePurple,
+  width: '90%',
   height: 40,
-  marginHorizontal: metrics.padding.horizontal,
-  marginBottom: metrics.padding.horizontal,
+  marginBottom: 10,
   borderRadius: 10,
   alignItems: 'center',
   justifyContent: 'center',
+  alignSelf: 'center',
 };
 
 export const btnText: TextStyle = {
